@@ -1,14 +1,102 @@
-<div class="login-container">
-  <h2>Login</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" formControlName="username" required>
+<div class="auth-wrapper">
+  <div class="glass-panel">
+    
+    <!-- HEADER -->
+    <div class="auth-header">
+      <h2>{{ viewMode === 'login' ? 'Bienvenido' : viewMode === 'otp' ? 'Seguridad OTP' : viewMode === 'forgot' ? 'Recuperar Cuenta' : 'Nueva Clave' }}</h2>
+      <p>{{ viewMode === 'login' ? 'Ingresa a tu cuenta para continuar' : viewMode === 'otp' ? 'Ingresa el código enviado a tu consola' : viewMode === 'forgot' ? 'Ingresa tu email registrado' : 'Ingresa tu token y la nueva contraseña' }}</p>
     </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" formControlName="password" required>
+
+    <!-- ERROR MESSAGES -->
+    <div class="global-error" *ngIf="errorMessage">
+      {{ errorMessage }}
     </div>
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  </form>
+
+    <!-- LOGIN FORM -->
+    <form *ngIf="viewMode === 'login'" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" class="form-control" formControlName="username" placeholder="Ingresa tu usuario">
+        <span class="validation-error" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">Requerido (min 3)</span>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" class="form-control" formControlName="password" placeholder="••••••••">
+        <span class="validation-error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">Requerido (min 6)</span>
+      </div>
+
+      <div class="auth-actions">
+        <label class="checkbox-group">
+          <input type="checkbox" formControlName="rememberMe"> Recordarme
+        </label>
+        <button type="button" class="link-btn" (click)="setView('forgot')">¿Olvidaste tu contraseña?</button>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Iniciar Sesión</span>
+        <div class="spinner" *ngIf="isLoading"></div>
+      </button>
+    </form>
+
+    <!-- OTP FORM -->
+    <form *ngIf="viewMode === 'otp'" [formGroup]="otpForm" (ngSubmit)="onVerifyOTP()">
+      <div class="form-group">
+        <label for="otp_code">Código OTP</label>
+        <input type="text" id="otp_code" class="form-control" formControlName="otp_code" placeholder="000000" maxlength="6">
+        <span class="validation-error" *ngIf="otpForm.get('otp_code')?.invalid && otpForm.get('otp_code')?.touched">Código requerido de 6 dígitos</span>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="otpForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Verificar</span>
+        <div class="spinner" *ngIf="isLoading"></div>
+      </button>
+
+      <div class="auth-actions" style="margin-top: 15px; justify-content: center;">
+        <button type="button" class="link-btn" (click)="setView('login')">Volver al login</button>
+      </div>
+    </form>
+
+    <!-- FORGOT PASSWORD FORM -->
+    <form *ngIf="viewMode === 'forgot'" [formGroup]="forgotForm" (ngSubmit)="onForgot()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" formControlName="email" placeholder="tucorreo@ejemplo.com">
+        <span class="validation-error" *ngIf="forgotForm.get('email')?.invalid && forgotForm.get('email')?.touched">Ingresa un email válido</span>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="forgotForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Enviar link</span>
+        <div class="spinner" *ngIf="isLoading"></div>
+      </button>
+
+      <div class="auth-actions" style="margin-top: 15px; justify-content: center;">
+        <button type="button" class="link-btn" (click)="setView('login')">Volver al login</button>
+      </div>
+    </form>
+
+    <!-- RESET PASSWORD FORM -->
+    <form *ngIf="viewMode === 'reset'" [formGroup]="resetForm" (ngSubmit)="onReset()">
+      <div class="form-group">
+        <label for="token">Token Seguro</label>
+        <input type="text" id="token" class="form-control" formControlName="token" placeholder="Pega el token aquí">
+      </div>
+
+      <div class="form-group">
+        <label for="new_password">Nueva Contraseña</label>
+        <input type="password" id="new_password" class="form-control" formControlName="new_password" placeholder="••••••••">
+        <span class="validation-error" *ngIf="resetForm.get('new_password')?.invalid && resetForm.get('new_password')?.touched">Mínimo 6 caracteres</span>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="resetForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Actualizar Clave</span>
+        <div class="spinner" *ngIf="isLoading"></div>
+      </button>
+
+      <div class="auth-actions" style="margin-top: 15px; justify-content: center;">
+        <button type="button" class="link-btn" (click)="setView('login')">Cancelar</button>
+      </div>
+    </form>
+
+  </div>
 </div>
