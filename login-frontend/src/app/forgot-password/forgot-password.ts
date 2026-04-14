@@ -49,7 +49,7 @@ export class ForgotPassword {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   userEmail: string = '';
-  private otpToken: string = '';
+  private verifiedOtp: string = '';
 
   // Paso 1: Enviar email
   submitEmail() {
@@ -95,9 +95,9 @@ export class ForgotPassword {
         email: this.userEmail, 
         otp 
       }).subscribe({
-        next: (response: any) => {
+        next: () => {
           this.isLoading = false;
-          this.otpToken = response.token;
+          this.verifiedOtp = otp;
           this.successMessage = 'OTP verificado correctamente';
           this.step = 'password';
           this.isSubmitted = false;
@@ -127,8 +127,9 @@ export class ForgotPassword {
 
       this.http.post(`${this.apiUrl}/password-reset-confirm/`, { 
         email: this.userEmail,
-        token: this.otpToken,
-        new_password: password
+        otp: this.verifiedOtp,
+        new_password: password,
+        new_password2: password
       }).subscribe({
         next: (response: any) => {
           this.isLoading = false;

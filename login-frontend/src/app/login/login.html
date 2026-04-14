@@ -1,17 +1,40 @@
 <div class="login-wrapper">
   <div class="login-container">
     <div class="logo-section">
-      <h1>ISPC</h1>
+      <h1>ISPC Campus</h1>
       <p class="logo-subtitle">Programación III</p>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      <h2>Inicia sesión</h2>
-      <p class="form-subtitle">Accede a tu cuenta</p>
+      <h2>Iniciar sesión</h2>
+      <p class="form-subtitle">Usa tu cuenta institucional o ingresa con usuario y contraseña</p>
+
+      <div class="oauth-actions">
+        <button type="button" class="oauth-button google" (click)="onGoogleLogin()">
+          <span class="oauth-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path fill="#EA4335" d="M12 11v3.5h4.9c-.2 1.1-.8 2-1.7 2.6l2.7 2.1c1.6-1.4 2.5-3.5 2.5-6 0-.6-.1-1.2-.2-1.8H12z"/>
+              <path fill="#34A853" d="M12 21c2.4 0 4.4-.8 5.9-2.2l-2.7-2.1c-.7.5-1.7.9-3.2.9-2.4 0-4.4-1.6-5.2-3.8l-2.8 2.2C5.5 19 8.5 21 12 21z"/>
+              <path fill="#4A90E2" d="M6.8 13.8c-.2-.5-.3-1.2-.3-1.8 0-.6.1-1.2.3-1.8L4 8C3.4 9.2 3 10.6 3 12s.4 2.8 1 4l2.8-2.2z"/>
+              <path fill="#FBBC05" d="M12 6.4c1.3 0 2.4.4 3.2 1.3l2.4-2.4C16.4 4.1 14.4 3 12 3 8.5 3 5.5 5 4 8l2.8 2.2C7.6 8 9.6 6.4 12 6.4z"/>
+            </svg>
+          </span>
+          Continuar con Google
+        </button>
+
+        <button type="button" class="oauth-button github" (click)="onGitHubLogin()">
+          <span class="oauth-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path fill="currentColor" d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.7-1.4-2.3-.3-4.8-1.1-4.8-5 0-1.1.4-2 1.1-2.8-.1-.3-.5-1.3.1-2.8 0 0 .9-.3 2.9 1.1.9-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c2-1.4 2.9-1.1 2.9-1.1.6 1.5.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.8 0 3.9-2.4 4.7-4.8 5 .4.3.8 1 .8 2v3c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/>
+            </svg>
+          </span>
+          Continuar con GitHub
+        </button>
+      </div>
 
       <div class="form-group">
         <input 
-          type="email" 
+          type="text" 
           id="username" 
           formControlName="username" 
           placeholder="Email o usuario"
@@ -49,12 +72,13 @@
         [disabled]="isLoading"
         [class.loading]="isLoading"
       >
-        <span *ngIf="!isLoading">Inicia sesión</span>
+        <span *ngIf="!isLoading">Ingresar</span>
         <span *ngIf="isLoading" class="loading-text">Cargando...</span>
       </button>
 
       <div class="help-section">
         <a routerLink="/forgot-password" class="help-link">¿Olvidaste tu contraseña?</a>
+        <a routerLink="/register" class="help-link">¿No tienes cuenta? Regístrate</a>
       </div>
     </form>
 

@@ -1,0 +1,100 @@
+<div class="register-wrapper">
+  <div class="register-container">
+    <div class="logo-section">
+      <h1>ISPC Campus</h1>
+      <p class="logo-subtitle">Programación III</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <h2>Regístrate</h2>
+      <p class="form-subtitle">Crea tu cuenta para iniciar sesión en la plataforma</p>
+
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="username"
+          placeholder="Usuario"
+          class="form-input"
+          [class.error]="isSubmitted && registerForm.get('username')?.invalid"
+        >
+        <span class="error-message" *ngIf="isSubmitted && registerForm.get('username')?.invalid">
+          <span *ngIf="registerForm.get('username')?.hasError('required')">El usuario es requerido</span>
+          <span *ngIf="registerForm.get('username')?.hasError('minlength')">Mínimo 3 caracteres</span>
+          <span *ngIf="registerForm.get('username')?.hasError('server')">{{ registerForm.get('username')?.getError('server') }}</span>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Email"
+          class="form-input"
+          [class.error]="isSubmitted && registerForm.get('email')?.invalid"
+        >
+        <span class="error-message" *ngIf="isSubmitted && registerForm.get('email')?.invalid">
+          <span *ngIf="registerForm.get('email')?.hasError('required')">El email es requerido</span>
+          <span *ngIf="registerForm.get('email')?.hasError('email')">Email inválido</span>
+          <span *ngIf="registerForm.get('email')?.hasError('server')">{{ registerForm.get('email')?.getError('server') }}</span>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Contraseña"
+          class="form-input"
+          [class.error]="isSubmitted && registerForm.get('password')?.invalid"
+        >
+        <span class="error-message" *ngIf="isSubmitted && registerForm.get('password')?.invalid">
+          <span *ngIf="registerForm.get('password')?.hasError('required')">La contraseña es requerida</span>
+          <span *ngIf="registerForm.get('password')?.hasError('minlength')">Mínimo 8 caracteres</span>
+          <span *ngIf="registerForm.get('password')?.hasError('server')">{{ registerForm.get('password')?.getError('server') }}</span>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="password2"
+          placeholder="Confirmar contraseña"
+          class="form-input"
+          [class.error]="isSubmitted && (registerForm.get('password2')?.invalid || registerForm.hasError('passwordMismatch'))"
+        >
+        <span class="error-message" *ngIf="isSubmitted && registerForm.get('password2')?.invalid">
+          <span *ngIf="registerForm.get('password2')?.hasError('required')">Confirma tu contraseña</span>
+          <span *ngIf="registerForm.get('password2')?.hasError('server')">{{ registerForm.get('password2')?.getError('server') }}</span>
+        </span>
+        <span class="error-message" *ngIf="isSubmitted && registerForm.hasError('passwordMismatch')">
+          Las contraseñas no coinciden
+        </span>
+      </div>
+
+      <div class="error-message full-width" *ngIf="formError">
+        {{ formError }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Crear cuenta</span>
+        <span *ngIf="isLoading">Creando...</span>
+      </button>
+
+      <div class="help-section">
+        <a routerLink="/login" class="help-link">¿Ya tienes cuenta? Iniciar sesión</a>
+      </div>
+    </form>
+
+    <div class="footer-text">
+      <p>Acceso seguro para estudiantes ISPC</p>
+    </div>
+  </div>
+</div>

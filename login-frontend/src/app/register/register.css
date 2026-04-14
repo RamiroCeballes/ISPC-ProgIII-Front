@@ -1,4 +1,4 @@
-.login-wrapper {
+.register-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,7 +11,7 @@
   font-family: 'Segoe UI', 'Noto Sans', 'Helvetica Neue', sans-serif;
 }
 
-.login-container {
+.register-container {
   background: #ffffff;
   border-radius: 28px;
   border: 1px solid #dde6f5;
@@ -19,7 +19,6 @@
   max-width: 450px;
   width: 100%;
   padding: 48px 36px 34px;
-  position: relative;
 }
 
 .logo-section {
@@ -45,7 +44,7 @@
   font-weight: 500;
 }
 
-.login-form h2 {
+.register-form h2 {
   font-size: 29px;
   font-weight: 500;
   color: #1b2638;
@@ -60,59 +59,8 @@
   line-height: 1.45;
 }
 
-.oauth-actions {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.oauth-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px solid #c9d6ef;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #243247;
-  height: 46px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.oauth-button:hover {
-  border-color: #8fb4f2;
-  box-shadow: 0 8px 20px rgba(26, 115, 232, 0.12);
-  transform: translateY(-1px);
-}
-
-.oauth-button.google {
-  color: #273444;
-}
-
-.oauth-button.github {
-  color: #1f2937;
-}
-
-.oauth-icon {
-  width: 18px;
-  height: 18px;
-  display: inline-flex;
-}
-
-.oauth-icon svg {
-  width: 18px;
-  height: 18px;
-}
-
 .form-group {
   margin-bottom: 14px;
-}
-
-.form-group:first-of-type {
-  margin-top: 18px;
 }
 
 .form-input {
@@ -143,10 +91,6 @@
   background: rgba(239, 68, 68, 0.05);
 }
 
-.form-input.error:focus {
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
 .error-message {
   display: block;
   font-size: 13px;
@@ -160,6 +104,16 @@
   background: rgba(239, 68, 68, 0.1);
   border-radius: 10px;
   margin-bottom: 16px;
+}
+
+.success-message {
+  text-align: center;
+  padding: 10px 16px;
+  background: rgba(52, 168, 83, 0.12);
+  color: #1f7a3a;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 13px;
 }
 
 .submit-button {
@@ -184,30 +138,14 @@
   transform: translateY(-1px);
 }
 
-.submit-button:active:not(:disabled) {
-  transform: translateY(0);
-}
-
 .submit-button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.submit-button.loading {
-  position: relative;
-}
-
-.loading-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .help-section {
   text-align: center;
   margin-top: 18px;
-  display: grid;
-  gap: 8px;
 }
 
 .help-link {
@@ -232,7 +170,7 @@
 }
 
 @media (max-width: 480px) {
-  .login-container {
+  .register-container {
     padding: 34px 20px 28px;
     border-radius: 22px;
   }
@@ -241,7 +179,7 @@
     font-size: 28px;
   }
 
-  .login-form h2 {
+  .register-form h2 {
     font-size: 24px;
   }
 
