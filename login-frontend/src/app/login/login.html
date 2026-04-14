@@ -1,14 +1,65 @@
-<div class="login-container">
-  <h2>Login</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" formControlName="username" required>
+<div class="login-wrapper">
+  <div class="login-container">
+    <div class="logo-section">
+      <h1>ISPC</h1>
+      <p class="logo-subtitle">Programación III</p>
     </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" formControlName="password" required>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <h2>Inicia sesión</h2>
+      <p class="form-subtitle">Accede a tu cuenta</p>
+
+      <div class="form-group">
+        <input 
+          type="email" 
+          id="username" 
+          formControlName="username" 
+          placeholder="Email o usuario"
+          class="form-input"
+          [class.error]="isSubmitted && loginForm.get('username')?.invalid"
+          required
+        >
+        <span class="error-message" *ngIf="isSubmitted && loginForm.get('username')?.invalid">
+          <span *ngIf="loginForm.get('username')?.hasError('required')">El usuario es requerido</span>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          placeholder="Contraseña"
+          class="form-input"
+          [class.error]="isSubmitted && loginForm.get('password')?.invalid"
+          required
+        >
+        <span class="error-message" *ngIf="isSubmitted && loginForm.get('password')?.invalid">
+          <span *ngIf="loginForm.get('password')?.hasError('required')">La contraseña es requerida</span>
+        </span>
+      </div>
+
+      <div class="error-message full-width" *ngIf="loginError">
+        {{ loginError }}
+      </div>
+
+      <button 
+        type="submit" 
+        class="submit-button"
+        [disabled]="isLoading"
+        [class.loading]="isLoading"
+      >
+        <span *ngIf="!isLoading">Inicia sesión</span>
+        <span *ngIf="isLoading" class="loading-text">Cargando...</span>
+      </button>
+
+      <div class="help-section">
+        <a routerLink="/forgot-password" class="help-link">¿Olvidaste tu contraseña?</a>
+      </div>
+    </form>
+
+    <div class="footer-text">
+      <p>Acceso seguro para estudiantes ISPC</p>
     </div>
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  </form>
+  </div>
 </div>

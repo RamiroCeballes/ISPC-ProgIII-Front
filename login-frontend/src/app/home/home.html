@@ -1,4 +1,53 @@
-<div class="welcome-container">
-  <h1>¡Bienvenido!</h1>
-  <p>Has iniciado sesión correctamente.</p>
+<div class="home-container">
+  <header class="home-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <h1>ISPC</h1>
+        <p class="subtitle">Programación III</p>
+      </div>
+      <nav class="user-nav">
+        <div class="user-info" *ngIf="currentUser$ | async as user">
+          <span class="user-name">{{ user.username || user.email }}</span>
+        </div>
+        <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="welcome-section">
+      <h2>¡Bienvenido!</h2>
+      <p class="welcome-text">{{ (currentUser$ | async)?.username || (currentUser$ | async)?.email }}, has iniciado sesión correctamente en ISPC Programación III.</p>
+      
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-icon">📚</div>
+          <h3>Materias</h3>
+          <p>Accede a todas tus materias y recursos de aprendizaje</p>
+          <a href="#" class="card-link">Ver materias</a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <h3>Tareas</h3>
+          <p>Revisa y completa las tareas asignadas</p>
+          <a href="#" class="card-link">Ver tareas</a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Calificaciones</h3>
+          <p>Consulta tu progreso académico</p>
+          <a href="#" class="card-link">Ver calificaciones</a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📢</div>
+          <h3>Anuncios</h3>
+          <p>Mantente actualizado con los últimos anuncios</p>
+          <a href="#" class="card-link">Ver anuncios</a>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
