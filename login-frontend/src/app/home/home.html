@@ -9,6 +9,7 @@
         <div class="user-info" *ngIf="currentUser$ | async as user">
           <span class="user-name">{{ user.username || user.email }}</span>
         </div>
+        <app-notification-bell></app-notification-bell>
         <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
       </nav>
     </div>
@@ -46,6 +47,13 @@
           <h3>Anuncios</h3>
           <p>Mantente actualizado con los últimos anuncios</p>
           <a href="#" class="card-link">Ver anuncios</a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <h3>Chat en vivo</h3>
+          <p>Conversá en tiempo real con el resto del curso</p>
+          <a routerLink="/chat/general" class="card-link">Entrar a #general</a>
         </div>
       </div>
     </div>

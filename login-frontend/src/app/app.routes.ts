@@ -3,6 +3,7 @@ import { Login } from './login/login';
 import { Home } from './home/home';
 import { ForgotPassword } from './forgot-password/forgot-password';
 import { Register } from './register/register';
+import { ChatRoom } from './chat/chat-room';
 
 export const routes: Routes = [
   { path: '', component: Login },
@@ -10,5 +11,6 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'home', component: Home },
+  { path: 'chat/:room', component: ChatRoom },
   { path: '**', redirectTo: '' }
 ];

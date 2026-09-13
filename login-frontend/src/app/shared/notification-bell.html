@@ -1,0 +1,29 @@
+<div class="bell-wrapper">
+  <button class="bell" (click)="toggle()" aria-label="Notificaciones">
+    🔔
+    <span class="badge" *ngIf="svc.unreadCount() > 0">{{ svc.unreadCount() }}</span>
+  </button>
+
+  <ul class="dropdown" *ngIf="open">
+    <li class="dropdown-header" *ngIf="svc.latest().length > 0">
+      <button class="mark-all" (click)="svc.markAllRead()">Marcar todas como leídas</button>
+    </li>
+    <li
+      class="notification-item"
+      *ngFor="let n of svc.latest()"
+      [class.unread]="!n.is_read"
+      (click)="svc.markRead(n.id)"
+    >
+      <a [routerLink]="n.link || null">
+        <strong>{{ n.title }}</strong>
+        <p>{{ n.body }}</p>
+      </a>
+    </li>
+    <li class="empty" *ngIf="svc.latest().length === 0">Sin notificaciones nuevas</li>
+  </ul>
+
+  <div class="toast" role="status" *ngIf="svc.toast() as t">
+    <strong>{{ t.title }}</strong>
+    <p>{{ t.body }}</p>
+  </div>
+</div>

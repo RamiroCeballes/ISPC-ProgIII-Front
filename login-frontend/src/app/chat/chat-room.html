@@ -1,0 +1,32 @@
+<div class="chat-container">
+  <header class="chat-header">
+    <a routerLink="/home" class="back-link">← Volver</a>
+    <h2>#{{ room }}</h2>
+    <span class="status" [class.online]="online()">{{ online() ? 'conectado' : 'reconectando…' }}</span>
+  </header>
+
+  <div #list class="messages">
+    <div class="msg" *ngFor="let m of messages(); trackBy: trackById">
+      <strong>{{ m.author }}</strong>
+      <small>{{ m.created_at | date: 'HH:mm' }}</small>
+      <p>{{ m.text }}</p>
+    </div>
+    <p class="empty" *ngIf="messages().length === 0">Todavía no hay mensajes en esta sala.</p>
+
+    <p class="system-event" *ngFor="let e of systemEvents()">{{ e }}</p>
+  </div>
+
+  <p class="typing">{{ typingLabel() }}</p>
+
+  <form (ngSubmit)="send()" class="composer">
+    <input
+      [(ngModel)]="draft"
+      name="draft"
+      (input)="onInput()"
+      placeholder="Escribí un mensaje… (probá @usuario para notificar)"
+      autocomplete="off"
+      [disabled]="!online()"
+    />
+    <button type="submit" [disabled]="!online() || !draft.trim()">Enviar</button>
+  </form>
+</div>
