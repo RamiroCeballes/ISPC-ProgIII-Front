@@ -3,436 +3,253 @@
 ## Tabla de Contenidos
 
 1. [Descripción General](#descripción-general)
-2. [Configuración Inicial](#configuración-inicial)
-3. [Estructura del Proyecto](#estructura-del-proyecto)
-4. [Módulos y Servicios](#módulos-y-servicios)
+2. [Instalación y Ejecución](#instalación-y-ejecución)
+3. [Arquitectura](#arquitectura)
+4. [Servicios](#servicios)
 5. [Componentes](#componentes)
-6. [Rutas de la Aplicación](#rutas-de-la-aplicación)
-7. [Autenticación](#autenticación)
-8. [Recuperación de Contraseña](#recuperación-de-contraseña)
-9. [Endpoints del Backend](#endpoints-del-backend)
-10. [Guía de Desarrollo](#guía-de-desarrollo)
-11. [Despliegue](#despliegue)
+6. [Rutas](#rutas)
+7. [Flujos de Autenticación](#flujos-de-autenticación)
+8. [Contratos de API](#contratos-de-api)
+9. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## Descripción General
 
-**ISPC Programa III Frontend** es una aplicación web construida con Angular 21 que proporciona una interfaz moderna y segura para la autenticación y acceso a un dashboard académico. La aplicación implementa autenticación basada en tokens JWT y un flujo de recuperación de contraseña con OTP.
+Frontend Angular 21 (standalone components) para autenticación académica con backend Django.
 
-### Características Principales
+Incluye:
 
-- Interfaz de login limpia y moderna con estética Google
-- Autenticación segura con tokens JWT
-- Flujo de recuperación de contraseña con OTP (One-Time Password)
-- Dashboard con acceso a funcionalidades académicas
-- Gestión de sesiones con persistencia en localStorage
-- Protección de rutas para usuarios autenticados
-- Diseño responsive para dispositivos móviles
-- Manejo robusto de errores
-- Interceptor HTTP para automatizar envío de tokens
-
-### Stack Tecnológico
-
-- **Framework**: Angular 21 (Standalone Components)
-- **Lenguaje**: TypeScript 5.9
-- **Gestión de Estado**: RxJS
-- **Formularios**: Reactive Forms
-- **HTTP**: HttpClient con Interceptores
-- **Estilos**: CSS3 (Gradientes, Flexbox, Grid)
-- **Enrutamiento**: Angular Router
+- Login JWT
+- Registro de usuarios
+- Recuperación de contraseña OTP
+- OAuth Google/GitHub en popup
+- Persistencia de sesión
 
 ---
 
-## Configuración Inicial
+## Instalación y Ejecución
 
-### Requisitos Previos
-
-- Node.js v18 o superior
-- npm 10.x o superior
-- Git
-
-### Instalación
-
-1. Clonar el repositorio:
-```bash
-git clone https://github.com/ISPC/ISPC-ProgIII-Front.git
-cd ISPC-ProgIII-Front/login-frontend
-```
-
-2. Instalar dependencias:
 ```bash
 npm install
-```
-
-3. Asegurar que el backend esté disponible en `http://localhost:8000`
-
-### Configuración del Entorno
-
-El archivo principal de configuración es `src/app/services/auth.service.ts`. Actualiza la URL del API si es necesario:
-
-```typescript
-private apiUrl = 'http://localhost:8000/api';
-```
-
-### Iniciar Desarrollo
-
-```bash
 npm start
 ```
 
-La aplicación estará disponible en `http://localhost:4200`
+Aplicación: `http://localhost:4200`
 
----
-
-## Estructura del Proyecto
-
-```
-login-frontend/
-├── public/                          # Archivos estáticos públicos
-├── src/
-│   ├── app/
-│   │   ├── services/                # Servicios compartidos
-│   │   │   ├── auth.service.ts      # Autenticación con JWT
-│   │   │   └── auth.interceptor.ts  # Interceptor Bearer token
-│   │   ├── login/                   # Componente de Login
-│   │   │   ├── login.ts
-│   │   │   ├── login.html
-│   │   │   ├── login.css
-│   │   │   └── login.spec.ts
-│   │   ├── home/                    # Componente Dashboard
-│   │   │   ├── home.ts
-│   │   │   ├── home.html
-│   │   │   ├── home.css
-│   │   │   └── home.spec.ts
-│   │   ├── forgot-password/         # Recuperación de Contraseña con OTP
-│   │   │   ├── forgot-password.ts
-│   │   │   ├── forgot-password.html
-│   │   │   ├── forgot-password.css
-│   │   │   └── forgot-password.spec.ts
-│   │   ├── app.routes.ts            # Definición de rutas
-│   │   ├── app.config.ts            # Configuración Angular
-│   │   ├── app.ts                   # Componente raíz
-│   │   ├── app.html
-│   │   ├── app.css
-│   │   └── app.spec.ts
-│   ├── styles.css                   # Estilos globales
-│   ├── main.ts                      # Punto de entrada
-│   └── index.html                   # HTML base
-├── angular.json                     # Angular CLI config
-├── tsconfig.json                    # TypeScript config
-├── tsconfig.app.json                # TypeScript app config
-├── package.json                     # Dependencias
-├── README.md                        # Información general
-└── DOCUMENTACION.md                 # Este archivo
-```
-
----
-
-## Módulos y Servicios
-
-### AuthService
-
-**Ubicación**: `src/app/services/auth.service.ts`
-
-Gestiona toda la autenticación y sesiones del usuario.
-
-#### Métodos
-
-- `login(username: string, password: string): Observable<any>` - Autentica usuario
-- `logout(): void` - Cierra sesión
-- `getToken(): string | null` - Retorna JWT token
-- `isAuthenticated(): boolean` - Verifica sesión activa
-
-#### Observables Públicos
-
-- `currentUser$: Observable<any>` - Usuario actual
-- `isAuthenticated$: Observable<boolean>` - Estado de autenticación
-
-#### Almacenamiento Local
-
-- `token`: JWT para peticiones autenticadas
-- `user`: Datos del usuario en JSON
-
-### AuthInterceptor
-
-**Ubicación**: `src/app/services/auth.interceptor.ts`
-
-Agrega automáticamente el token Bearer en todas las peticiones HTTP.
-
----
-
-## Componentes
-
-### Login Component
-
-**Ubicación**: `src/app/login/`
-
-Permite autenticarse al sistema.
-
-- Formulario reactivo con validaciones
-- Error handling contextual
-- Link a recuperación de contraseña
-- Redirección automática a dashboard
-
-### Home Component
-
-**Ubicación**: `src/app/home/`
-
-Dashboard post-autenticación con:
-
-- Información del usuario
-- Botón logout
-- 4 tarjetas de acceso rápido:
-  - Materias
-  - Tareas
-  - Calificaciones
-  - Anuncios
-- Protección de ruta
-
-### Forgot Password Component
-
-**Ubicación**: `src/app/forgot-password/`
-
-Flujo de 3 pasos para resetear contraseña:
-
-**Paso 1**: Ingresar email
-- Validación: email válido requerido
-- Envía código OTP
-
-**Paso 2**: Verificar código
-- Validación: 6 dígitos numéricos
-- Input monoespaciado
-- Verifica OTP contra servidor
-
-**Paso 3**: Nueva contraseña
-- Validación: mínimo 8 caracteres
-- Confirmación: debe coincidir
-- Actualiza en servidor
-- Redirige a login
-
-#### Características
-
-- Barra de progreso visual
-- Botón "Atrás" entre pasos
-- Mensajes de éxito/error
-- Estados de carga
-
----
-
-## Rutas de la Aplicación
-
-```
-/              → Login
-/forgot-password → Recuperación de contraseña
-/home          → Dashboard (protegida)
-**             → Redirige a /
-```
-
----
-
-## Autenticación
-
-### Flujo de Login
-
-```
-1. Usuario ingresa credenciales
-2. POST /api/login/
-3. Backend retorna JWT token
-4. Frontend almacena en localStorage
-5. Componentes se actualizan
-6. Navega a /home
-7. Interceptor agrega token en peticiones futuras
-```
-
-### Persistencia
-
-- Session se restaura automáticamente al iniciar la app
-- Token y usuario se almacenan en localStorage
-- Usuario no pierde sesión al cerrar navegador
-
----
-
-## Recuperación de Contraseña
-
-### Flujo OTP
-
-```
-1. Click en "¿Olvidaste contraseña?" → /forgot-password
-2. Ingresa email
-3. Backend genera OTP y envía por email
-4. Usuario ingresa código de 6 dígitos
-5. Backend verifica OTP
-6. Usuario ingresa nueva contraseña
-7. Backend actualiza contraseña
-8. Redirige a /login
-```
-
-### Seguridad
-
-- OTP de corta validez (típicamente 5-10 minutos)
-- Token temporal único por solicitud
-- Contraseña encriptada en servidor
-- OTPs no se almacenan en frontend
-
----
-
-## Endpoints del Backend
-
-### Login
-
-**POST /api/login/**
-```json
-Request: { "username": "string", "password": "string" }
-Response: { "token": "jwt...", "user": { ... } }
-```
-
-### Password Reset - Paso 1
-
-**POST /api/password-reset-request/**
-```json
-Request: { "email": "string" }
-Response: { "message": "Código enviado" }
-```
-
-### Password Reset - Paso 2
-
-**POST /api/password-reset-verify-otp/**
-```json
-Request: { "email": "string", "otp": "string" }
-Response: { "token": "temp_token..." }
-```
-
-### Password Reset - Paso 3
-
-**POST /api/password-reset-confirm/**
-```json
-Request: { "email": "string", "token": "string", "new_password": "string" }
-Response: { "message": "Contraseña actualizada" }
-```
-
-### Headers Requeridos (Autenticado)
-
-```
-Authorization: Bearer {jwt_token}
-Content-Type: application/json
-```
-
----
-
-## Estilos y Diseño
-
-### Colores
-
-| Tipo | Hex |
-|------|-----|
-| Primario | #4f46e5 |
-| Error | #ef4444 |
-| Éxito | #10b981 |
-| Fondo | #f5f7fa |
-
-### Tipografía
-
-- **Font**: System fonts (-apple-system, Segoe UI, etc.)
-- **Headings**: 600-700 weight
-- **Body**: 400-500 weight
-- **Monospace**: Courier New (OTP)
-
-### Responsive
-
-- Mobile: < 480px
-- Tablet: 480px - 768px
-- Desktop: > 768px
-
----
-
-## Guía de Desarrollo
-
-### Crear Componente
-
-```bash
-ng generate component components/mi-componente
-```
-
-### Usar AuthService
-
-```typescript
-export class MiComponente {
-  private authService = inject(AuthService);
-  usuario$ = this.authService.currentUser$;
-}
-```
-
-### Validador Personalizado
-
-```typescript
-const miValidador: ValidatorFn = (control) => {
-  // Lógica
-  return esValido ? null : { miError: true };
-};
-```
-
----
-
-## Scripts
-
-```bash
-npm start       # Desarrollo
-npm run build   # Producción
-npm run watch   # Watch mode
-npm test        # Tests
-```
-
----
-
-## Despliegue
-
-### Build
+Build producción:
 
 ```bash
 npm run build
 ```
 
-Genera archivos en `dist/login-frontend/`
+---
 
-### Servidor Web
+## Arquitectura
 
-```nginx
-location / {
-  try_files $uri $uri/ /index.html;
+Estructura principal:
+
+- `src/app/services/auth.service.ts`: lógica de auth y sesiones
+- `src/app/services/auth.interceptor.ts`: Bearer token automático
+- `src/app/login/`: login + OAuth popup
+- `src/app/register/`: registro de usuarios
+- `src/app/forgot-password/`: flujo OTP
+- `src/app/home/`: pantalla protegida
+- `src/app/app.routes.ts`: rutas de aplicación
+- `src/app/app.config.ts`: providers e interceptores
+
+---
+
+## Servicios
+
+### AuthService
+
+Métodos principales:
+
+- `login(username, password)`
+- `register(username, email, password, password2)`
+- `logout()`
+- `getToken()`
+- `isAuthenticated()`
+- `getGoogleOAuthUrl()`
+- `getGitHubOAuthUrl()`
+- `completeOAuthLogin(access, refresh)`
+
+Estado reactivo:
+
+- `currentUser$`
+- `isAuthenticated$`
+
+Persistencia en localStorage:
+
+- `token`
+- `refresh_token`
+- `user`
+
+### AuthInterceptor
+
+Adjunta `Authorization: Bearer <token>` en requests autenticados.
+
+---
+
+## Componentes
+
+### Login (`/login`)
+
+- Formulario username/password
+- Botones OAuth Google/GitHub
+- OAuth por popup con `postMessage`
+- Manejo de errores 401/400
+
+### Register (`/register`)
+
+- Campos: username, email, password, password2
+- Validaciones locales (required, email, minLength, match)
+- Validaciones backend inline (username/email duplicados, contraseña débil)
+
+### Forgot Password (`/forgot-password`)
+
+Flujo de 3 pasos:
+
+1. Solicitud OTP por email
+2. Verificación OTP
+3. Confirmación con nueva contraseña
+
+Payload final usa `otp`, `new_password`, `new_password2`.
+
+### Home (`/home`)
+
+- Requiere sesión activa
+- Permite logout
+
+---
+
+## Rutas
+
+- `/` -> login
+- `/login` -> login
+- `/register` -> registro
+- `/forgot-password` -> recuperar contraseña
+- `/home` -> home
+- `**` -> redirige a `/`
+
+---
+
+## Flujos de Autenticación
+
+### Login JWT
+
+1. Usuario envía credenciales
+2. `POST /api/login/`
+3. Respuesta con `access`, `refresh`, `user`
+4. Front guarda sesión y navega a `/home`
+
+### Registro
+
+1. Usuario completa formulario
+2. `POST /api/register/`
+3. Backend valida duplicados y password
+4. Front muestra errores por campo o confirma creación
+
+### OAuth Popup (Google/GitHub)
+
+1. Front abre popup a `/accounts/{provider}/login/?process=login`
+2. Usuario autentica en proveedor real
+3. Backend redirige con tokens
+4. Popup envía tokens a ventana principal por `postMessage`
+5. Front completa sesión y navega a `/home`
+
+---
+
+## Contratos de API
+
+### Register
+
+`POST /api/register/`
+
+```json
+{
+  "username": "newuser",
+  "email": "user@example.com",
+  "password": "SecurePassword123!",
+  "password2": "SecurePassword123!"
+}
+```
+
+Respuesta exitosa:
+
+```json
+{
+  "refresh": "...",
+  "access": "...",
+  "user": {
+    "id": 1,
+    "username": "newuser",
+    "email": "user@example.com"
+  }
+}
+```
+
+### Login
+
+`POST /api/login/`
+
+```json
+{
+  "username": "newuser",
+  "password": "SecurePassword123!"
+}
+```
+
+Respuesta exitosa igual a register (`refresh`, `access`, `user`).
+
+### Password Reset
+
+1) `POST /api/password-reset-request/`
+
+```json
+{ "email": "user@example.com" }
+```
+
+2) `POST /api/password-reset-verify-otp/`
+
+```json
+{ "email": "user@example.com", "otp": "123456" }
+```
+
+3) `POST /api/password-reset-confirm/`
+
+```json
+{
+  "email": "user@example.com",
+  "otp": "123456",
+  "new_password": "NewPassword123!",
+  "new_password2": "NewPassword123!"
 }
 ```
 
 ---
 
-## Solución de Problemas
+## Troubleshooting
 
-**Página en blanco después de login**
-- Verificar token en localStorage
-- Revisar respuesta del backend
-- Revisar console (F12)
+### 400 en register
 
-**CORS error**
-- Backend debe permitir `http://localhost:4200`
+Causas comunes:
 
-**OTP no llega**
-- Verificar email en sistema
-- Revisar spam
+- username duplicado
+- email duplicado
+- contraseña débil
 
----
+### 401 en login
 
-## Mejoras Futuras
+- credenciales inválidas
 
-- Refresh token automático
-- 2FA adicional
-- OAuth (Google, GitHub)
-- Tests automatizados
-- Tema oscuro
-- Auditoría de cambios
-- Notificaciones en tiempo real
+### OAuth abre página intermedia en vez de proveedor
 
----
+- Verificar URLs con `?process=login`
+- Verificar backend con `SOCIALACCOUNT_LOGIN_ON_GET = True`
 
-**Última actualización**: Abril 14, 2026  
-**Versión**: 1.1.0  
-**Angular**: 21.2.0
+### CORS error
+
+- Revisar `CORS_ALLOWED_ORIGINS` en backend
+- Confirmar frontend en `http://localhost:4200`
